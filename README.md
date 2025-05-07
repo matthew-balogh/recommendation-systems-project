@@ -61,4 +61,11 @@ Verifications are issued after recommendations.
 
 ## Interpretation and Explanation
 
+### Model 1.1
+
+![](./img/model_1a_explanation.png)
+
+### Model 1.2
+![](./img/model_1b_explanation.png)
+
 ## Literature Review
