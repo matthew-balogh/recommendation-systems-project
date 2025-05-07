@@ -7,7 +7,16 @@ The project objective is to experiment with various types of collaborative filte
 ## Business Needs
 
 ### 1. Home page recommendations
-When a user opens the home page of the e-commerce app, they should see relevant items as recommendations. The relevancy is based on the entire purchase history of the given user, for which similar users are selected and their most-relevant items are recommended for the user.
+When a user opens the home page of the e-commerce app, they should see relevant items as recommendations.
+
+### 1.1. Popular items
+The relevancy is based on how many times an item has been purchased.
+
+### 1.2. Popular items on average
+The relevancy is based on the average of how many times an item has been purchased by users.
+
+### 1.3. Items purchased by similar users
+The relevancy is based on the entire purchase history of the given user, for which similar users are selected and their most-relevant items are recommended for the user.
 
 ![Model 1 UI](./img/model_1_ui.png)
 
@@ -19,7 +28,7 @@ When a user opens the home page of the e-commerce app, they should see relevant 
 
 ## Model Implementations
 
-### 1. User-based Collaborative Filtering
+### Model 1.3. User-based Collaborative Filtering
 
 The model is called as `UserBasedCollabFilterRecommender` and it takes the the pivot and similarity matrices as inputs on initialization. Calling the `.fit(userid)` method, the model is fitted for the given user (visitor). In the fitting phase, records of the pivot and similarity matrices related to the given user is selected and those items that the user has already purchased are flagged. Calling the `.recommend(k, n)` method, the model makes the recommendation for the fitted user, where `k` denotes the maximum number of similar users to be considered, and `n` denotes the maximum items to be retrieved as recommendations. The model makes sure that the given user is not included in the similar user collection and that items the user already purchased are not recommended and do not waste the result space defined by `k` and `n`.
 
@@ -30,11 +39,18 @@ The model provides helper functions to access fitting data and recommendation da
 
 ## Recommendations
 
+### Model 1.1
+
+![](./img/model_1a_recommendations.png)
+
+### Model 1.2
+![](./img/model_1b_recommendations.png)
+
 ## Verification
 
 Verifications are issued after recommendations.
 
-### 1. User-based Collaborative Filtering
+### Model 1.3. User-based Collaborative Filtering
 
 `UserBasedCFRVerifier` ensures that the recommendations align with the requirements of `UserBasedCollabFilterRecommender`. Calling `run(designated_visitor_id)`, the following verifications are made:
 
