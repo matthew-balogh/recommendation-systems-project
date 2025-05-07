@@ -30,6 +30,19 @@ The model provides helper functions to access fitting data and recommendation da
 
 ## Recommendations
 
+## Verification
+
+Verifications are issued after recommendations.
+
+### 1. User-based Collaborative Filtering
+
+`UserBasedCFRVerifier` ensures that the recommendations align with the requirements of `UserBasedCollabFilterRecommender`. Calling `run(designated_visitor_id)`, the following verifications are made:
+
+* user in recommndation matches the input
+* items flagged as already interacted with by the user are indeed in the original transactional dataset
+* the number of users similar to the given user is at most $K$ and the given user is not in the collection
+* the number of items recommended is at most $N$ and the items already interacted with by the user is not in the collection
+
 ## Interpretation and Explanation
 
 ## Literature Review
