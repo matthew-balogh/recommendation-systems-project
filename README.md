@@ -4,27 +4,54 @@ In this project, the goal is to implement a recommender system for a company in 
 
 The project objective is to experiment with various types of collaborative filtering, from simple and primitive ones, to exploring how matrix factorization could play a role in arriving at a better or more efficient model. Besides this objective, the implementation is driven by the business needs.
 
+## Methodology
+
+1.  Business needs
+
+2.  Requirement details
+
+3.  Model planning
+
+4.  Model construction
+
+5.  Evaluation
+
+    1.  Recommendations
+
+    2.  Verification
+
+    3.  Interpretation
+
+6.  Explanation
+
+7.  Summary of different models
+
 ## Business Needs
 
-### 1. Home page recommendations
-When a user opens the home page of the e-commerce app, they should see relevant items as recommendations.
+**Home Page recommendations\
+**When a user opens the home page of the online store, they should see relevant items as recommendations.
 
-### 1.1. Popular items
-The relevancy is based on how many times an item has been purchased.
+-   **Popular items**\
+    The popularity can be measured from more angles, for example, total aggregated purchase count or average purchase count of an item.
 
-### 1.2. Popular items on average
-The relevancy is based on the average of how many times an item has been purchased by users.
+-   **Items purchased by similar users**\
+    The relevancy is based on the entire purchase history of the given user, for which similar users are selected and their most-relevant items are recommended for the user.
 
-### 1.3. Items purchased by similar users
-The relevancy is based on the entire purchase history of the given user, for which similar users are selected and their most-relevant items are recommended for the user.
+## Requirement Details
 
-![Model 1 UI](./img/model_1_ui.png)
+| Business need                    | In-app title                 | Expected behavior                                                                                                                                                         | Model name                             |
+| -------------------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| Popular item recommendation      | All-time Favorites           | The N most-frequently purchased items are recommended.                                                                                                                    | `PopularItemRecommender`               |
+| Popular item recommendation      | Others are Coming Back for   | The N items with the largest mean purchase frequency are recommended.                                                                                                     | `MeanPopularItemRecommender`           |
+| Items purchased by similar users | We think You will Love these | Based on the entire purchase history of the given user, similar K users are selected and N items from their purchases (not yet bought by the given user) are recommended. | `UserBasedCollabFilterItemRecommender` |
 
 ## Model Planning
 
-### 1. Recommendation based on entire purchase history
-![Model 1 UI](./img/model_1_planning.png)
-
+| Model name                             | User elements              | Measurement                                                | Similarity | Filtering            | Selection   |
+| -------------------------------------- | -------------------------- | ---------------------------------------------------------- | ---------- | -------------------- | ----------- |
+| `PopularItemRecommender`               | \-                         | Purchase frequency, item-wise                              | \-         | \-                   | Top N items |
+| `MeanPopularItemRecommender`           | \-                         | Mean purchase frequency, item-wise, after grouping by user | \-         | \-                   | Top N items |
+| `UserBasedCollabFilterItemRecommender` | Previously purchased items | \-                                                         | \-         | K-most similar users | Top N items |
 
 ## Model Implementations
 
