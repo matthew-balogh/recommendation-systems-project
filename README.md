@@ -35,6 +35,13 @@ When a user opens the home page of the online store, they should see relevant it
 
 ![Wireframe for the home page of the online store. Three recommendation panels are depicted: two global and one filtering approaches.](./img/home.png)
 
+**Newsletter recommendations**\
+Eye-catching recommendations are sent to the users' mail.
+
+-   **Discovered patterns**
+
+![](img/newsletter.png)
+
 ## Requirement Details
 
 | Business need                    | In-app title                   | Expected behavior                                                                                                                                                                                                          | Model name                             |
@@ -53,6 +60,7 @@ When a user opens the home page of the online store, they should see relevant it
 | `UserBasedCollabFilterItemRecommender` | Previously purchased items                                             | Binary purchase flag, user-item pairwise                   | Cosine similarity, user-user pairwise                         | $K$-most similar users (threshold: $0.1$) | Top $N$ items |
 | `MatrixFactorizationItemRecommender`   | Previously purchased items for all users (implicit feedback, weighted) | Discovered latent factors ($U$, $V$)                       | Dot product of latent factors of users and items ($U$, $V.T$) | \-                                        | Top $N$ items |
 
+![](img/model_planning_levels.png)
 
 ## Model Implementations
 
@@ -71,6 +79,10 @@ The model is called as `UserBasedCollabFilterItemRecommender` and it takes the t
 After finding the similar users, the items associated with these users' purchases are retrieved in an ordered fashion: the more-frequently the item is bought the better its position is in this list.
 
 The model provides helper functions to access fitting data and recommendation data by `.get_fit_memory()` and `.get_recommend_memory()`.
+
+### `MatrixFactorizationItemRecommender`
+
+The model is called as `MatrixFactorizationItemRecommender` and it incorporates a Weighted Matrix Factorization (`WMF`) algorithm from `cornac`. Calling the `.experiment(...)` method, the model performs a `cornac.Experiment` with the given arguments.
 
 ## Recommendations
 
@@ -98,18 +110,6 @@ The model provides helper functions to access fitting data and recommendation da
 | ----------- | ----: | -----: | -----: | ----: | ----: |
 | **Item id** | 10572 | 171878 | 218794 | 40630 | 32581 |
 
-## Verification
-
-Verifications are issued after recommendations.
-
-### `UserBasedCollabFilterItemRecommender`
-
-`UserBasedCFRVerifier` ensures that the recommendations align with the requirements of `UserBasedCollabFilterRecommender`. Calling `run(designated_visitor_id)`, the following verifications are made:
-
--   user in recommndation matches the input
--   items flagged as already interacted with by the user are indeed in the original transactional dataset
--   the number of users similar to the given user is at most $K$ and the given user is not in the collection
--   the number of items recommended is at most $N$ and the items already interacted with by the user is not in the collection
 
 ## Explaining the Results
 
@@ -141,5 +141,3 @@ In the second diagram below, we can see the $N$ recommended items and those ($\l
 | -------------------------------- | ----------------------------- | ------------------------------------------------------------------------- | ------ | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | PopularItemsRecommender          | 1\. Home page recommendations | Recommends the most-frequently purchased items.                           | Global | It is easy to implement and to recommend items. It is applicable in the cold-start case. | It may be biased by differences in purchase scales across items or users. It does not make any filtering related to the actual user: same results for everyone.                                        |
 | PopularItemsOnAverageRecommender |                               | Recommends the most-frequently purchased items yet based on a mean value. | Global | It is easy to implement and to recommend items. It is applicable in the cold-start case. | It may be biased by differences in purchase scales across items but the differences across users is now reduced. It does not make any filtering related to the actual user: same results for everyone. |
-
-## Literature Review
