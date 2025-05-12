@@ -14,15 +14,9 @@ The project objective is to experiment with various types of collaborative filte
 
 4.  Model construction
 
-5.  Evaluation
+5.  Explanation
 
-    1.  Recommendations
-
-    2.  Verification
-
-    3.  Interpretation
-
-6.  Explanation
+6.  Evaluation
 
 7.  Summary of different models
 
@@ -112,15 +106,29 @@ Verifications are issued after recommendations.
 -   the number of users similar to the given user is at most $K$ and the given user is not in the collection
 -   the number of items recommended is at most $N$ and the items already interacted with by the user is not in the collection
 
-## Interpretation and Explanation
+## Explaining the Results
 
-### Model 1.1
+### `PopularItemRecommender`
+
+If we look at the purchase frequency of each recommended item and associate them with the histogram of purchase frequencies, we can see that the recommended items are in the right tail of the distribution, that is the recommended items are the most popular in terms of item-wise purchase frequency.
 
 ![](./img/model_1a_explanation.png)
 
-### Model 1.2
+### `MeanPopularItemRecommender`
+
+If we look at the average purchase frequency of each recommended item and associate them with the histogram of average purchase frequencies, we can see that the recommended items are in the right tail of the distribution, that is the recommended items are the most popular in terms of item-wise average purchase frequency.
 
 ![](./img/model_1b_explanation.png)
+
+### `UserBasedCollabFilterItemRecommender`
+
+If we look at the first diagram below, we can see the $K$ users most similar to the designated one ,highlighted with green color. As the visual exhibits, the $K$ similarities indeed have the largest scores based on *Cosine* similarity.
+
+In the second diagram below, we can see the $N$ recommended items and those ($\le K$) similar users that purchased any of these recommended items before. Black color indicates the absence, while white the presence of such interaction. We can see that each recommended item has been purchased by at least one of the similar users.
+
+![](img/model_3_explanation_1.png)
+
+![](img/model_3_explanation_2.png)
 
 ## Summary
 
