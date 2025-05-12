@@ -22,6 +22,8 @@ The project objective is to experiment with various types of collaborative filte
 
 ## Business Needs
 
+Item recommendations for visitors in an online store based on implicit feedback to provide better user experience and to boost sales.
+
 **Home Page recommendations**\
 When a user opens the home page of the online store, they should see relevant items as recommendations.
 
@@ -35,19 +37,22 @@ When a user opens the home page of the online store, they should see relevant it
 
 ## Requirement Details
 
-| Business need                    | In-app title                 | Expected behavior                                                                                                                                                         | Model name                             |
-| -------------------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
-| Popular item recommendation      | All-time Favorites           | The N most-frequently purchased items are recommended.                                                                                                                    | `PopularItemRecommender`               |
-| Popular item recommendation      | Others are Coming Back for   | The N items with the largest mean purchase frequency are recommended.                                                                                                     | `MeanPopularItemRecommender`           |
-| Items purchased by similar users | We think You will Love these | Based on the entire purchase history of the given user, similar K users are selected and N items from their purchases (not yet bought by the given user) are recommended. | `UserBasedCollabFilterItemRecommender` |
+| Business need                    | In-app title                   | Expected behavior                                                                                                                                                                                                          | Model name                             |
+| -------------------------------- | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| Popular item recommendation      | *All-time Favorites*           | The $N$ most-frequently purchased items are recommended.                                                                                                                                                                   | `PopularItemRecommender`               |
+| Popular item recommendation      | *Others are Coming Back for*   | The $N$ items with the largest mean purchase frequency are recommended.                                                                                                                                                    | `MeanPopularItemRecommender`           |
+| Items purchased by similar users | *We think You will Love these* | Based on the entire purchase history of the given user, similar $K$ users are selected and $N$ items from their purchases (not yet bought by the given user) are recommended.                                              | `UserBasedCollabFilterItemRecommender` |
+| Discover hidden patterns         | *Already Picked for You*       | Based on the entire purchase history of all the users, hidden factors are discovered via *Matrix Factorization*. $N$ not yet purchased items with the top score implied by the factors are recommended for the given user. | `MatrixFactorizationItemRecommender`   |
 
 ## Model Planning
 
-| Model name                             | User elements              | Measurement                                                | Similarity                            | Filtering            | Selection   |
-| -------------------------------------- | -------------------------- | ---------------------------------------------------------- | ------------------------------------- | -------------------- | ----------- |
-| `PopularItemRecommender`               | \-                         | Purchase frequency, item-wise                              | \-                                    | \-                   | Top N items |
-| `MeanPopularItemRecommender`           | \-                         | Mean purchase frequency, item-wise, after grouping by user | \-                                    | \-                   | Top N items |
-| `UserBasedCollabFilterItemRecommender` | Previously purchased items | Binary purchase flag, user-item pairwise                   | Cosine similarity, user-user pairwise | K-most similar users | Top N items |
+| Model name                             | User elements                                                          | Measurement                                                | Similarity                                                    | Filtering                                 | Selection     |
+| -------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------- | ----------------------------------------- | ------------- |
+| `PopularItemRecommender`               | \-                                                                     | Purchase frequency, item-wise                              | \-                                                            | \-                                        | Top $N$ items |
+| `MeanPopularItemRecommender`           | \-                                                                     | Mean purchase frequency, item-wise, after grouping by user | \-                                                            | \-                                        | Top $N$ items |
+| `UserBasedCollabFilterItemRecommender` | Previously purchased items                                             | Binary purchase flag, user-item pairwise                   | Cosine similarity, user-user pairwise                         | $K$-most similar users (threshold: $0.1$) | Top $N$ items |
+| `MatrixFactorizationItemRecommender`   | Previously purchased items for all users (implicit feedback, weighted) | Discovered latent factors ($U$, $V$)                       | Dot product of latent factors of users and items ($U$, $V.T$) | \-                                        | Top $N$ items |
+
 
 ## Model Implementations
 
@@ -97,7 +102,7 @@ The model provides helper functions to access fitting data and recommendation da
 
 Verifications are issued after recommendations.
 
-### Model 1.3. User-based Collaborative Filtering
+### `UserBasedCollabFilterItemRecommender`
 
 `UserBasedCFRVerifier` ensures that the recommendations align with the requirements of `UserBasedCollabFilterRecommender`. Calling `run(designated_visitor_id)`, the following verifications are made:
 
