@@ -77,17 +77,23 @@ The model provides helper functions to access fitting data and recommendation da
 
 ### `PopularItemRecommender`
 
+![](img/model_1_call.png)
+
 |             |        |        |        |      |        |
 | ----------- | -----: | -----: | -----: | ---: | -----: |
 | **Item id** | 461686 | 119736 | 213834 | 7943 | 312728 |
 
 ### `MeanPopularItemRecommender`
 
+![](img/model_2_call.png)
+
 |             |        |        |      |        |        |
 | ----------- | -----: | -----: | ---: | -----: | -----: |
 | **Item id** | 396042 | 224549 |  147 | 218612 | 347641 |
 
 ### `UserBasedCollabFilterItemRecommender`
+
+![](img/model_3_call.png)
 
 |             |       |        |        |       |       |
 | ----------- | ----: | -----: | -----: | ----: | ----: |
