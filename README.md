@@ -117,13 +117,13 @@ The model is called as `MatrixFactorizationItemRecommender` and it incorporates 
 
 If we look at the purchase frequency of each recommended item and associate them with the histogram of purchase frequencies, we can see that the recommended items are in the right tail of the distribution, that is the recommended items are the most popular in terms of item-wise purchase frequency.
 
-![](./img/model_1a_explanation.png)
+![](./img/model_1_explanation.png)
 
 ### `MeanPopularItemRecommender`
 
 If we look at the average purchase frequency of each recommended item and associate them with the histogram of average purchase frequencies, we can see that the recommended items are in the right tail of the distribution, that is the recommended items are the most popular in terms of item-wise average purchase frequency.
 
-![](./img/model_1b_explanation.png)
+![](./img/model_2_explanation.png)
 
 ### `UserBasedCollabFilterItemRecommender`
 
